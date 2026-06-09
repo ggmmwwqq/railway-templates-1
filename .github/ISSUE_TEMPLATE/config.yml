@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: PocketBase Documentation
+    url: https://pocketbase.io/docs/
+    about: Read the official PocketBase docs before opening an issue.
+  - name: Railway Documentation
+    url: https://docs.railway.com/
+    about: Railway deployment guides and troubleshooting.
