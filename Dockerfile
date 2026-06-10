@@ -15,9 +15,6 @@ RUN apk add --no-cache nodejs ca-certificates tzdata sqlite
 
 COPY --from=downloader /usr/local/bin/pocketbase /usr/local/bin/pocketbase
 
-RUN mkdir -p /pb_data
-VOLUME /pb_data
-
 COPY healthcheck/ /app/healthcheck/
 
 ENV PORT=8080
