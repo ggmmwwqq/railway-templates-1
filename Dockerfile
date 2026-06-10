@@ -1,6 +1,7 @@
 ARG PB_VERSION=0.23.12
 
 FROM alpine:3.21 AS downloader
+ARG PB_VERSION
 RUN apk add --no-cache wget unzip ca-certificates
 RUN wget -q "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip" \
     -O /tmp/pb.zip && \
