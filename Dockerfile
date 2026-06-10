@@ -11,7 +11,7 @@ RUN wget -q "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VE
     rm -rf /tmp/pb.zip /tmp/pb
 
 FROM alpine:3.21
-RUN apk add --no-cache nodejs ca-certificates tzdata
+RUN apk add --no-cache nodejs ca-certificates tzdata sqlite
 
 COPY --from=downloader /usr/local/bin/pocketbase /usr/local/bin/pocketbase
 
@@ -21,11 +21,10 @@ VOLUME /pb_data
 COPY healthcheck/ /app/healthcheck/
 
 ENV PORT=8080
-ENV SIDECAR_PORT=8090
+ENV PB_INTERNAL_PORT=8090
 ENV PB_DATA_DIR=/pb_data
 
 EXPOSE 8080
-EXPOSE 8090
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh

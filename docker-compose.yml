@@ -5,16 +5,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-      - "8090:8090"
     volumes:
       - pb_data:/pb_data
     environment:
       - PORT=8080
-      - SIDECAR_PORT=8090
-      # Uncomment to auto-create admin:
+      - PB_INTERNAL_PORT=8090
       # - PB_ADMIN_EMAIL=admin@example.com
       # - PB_ADMIN_PASSWORD=change-me
-      # Uncomment for production encryption:
       # - PB_ENCRYPTION_KEY=your-32-char-secret
 
 volumes:

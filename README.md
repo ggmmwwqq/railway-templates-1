@@ -4,59 +4,23 @@
   </a>
 </p>
 
-<p align="center">
-  <strong>Deploy a production backend in 60 seconds.</strong><br>
-  No setup. No config. No headache.
-</p>
+# PocketBase Instant Backend
+
+**The easiest way to run PocketBase on Railway.** Deploy in under 2 minutes. Zero config.
 
 ---
 
 ## What is this?
 
-**Instant Backend** gives you a fully operational backend — database, authentication, file storage, admin panel, and REST API — in one click.
+A one-click template that gives you a complete backend — database, auth, file storage, admin panel, and REST API. Built on [PocketBase](https://pocketbase.io), wrapped for production on Railway.
 
-It wraps [PocketBase](https://pocketbase.io) (an open-source Firebase alternative) with a production-ready Docker container, health monitoring, and zero-config Railway deployment. You get a real backend. Not a demo. Not a mock. A production backend you can use for your SaaS, mobile app, bot, or internal tool.
+## Why it exists
 
-### The Problem
-
-Every project needs a backend. But setting one up means choosing a database, writing an API, configuring auth, handling file uploads, setting up monitoring, and deploying it somewhere. That's days of work before you write a single line of product code.
-
-### The Solution
-
-Click deploy. Wait 60 seconds. You have:
-
-- A database (SQLite, with automatic persistence)
-- A REST API (auto-generated from your data model)
-- Authentication (email/password, OAuth2 with 50+ providers)
-- File storage (with automatic thumbnail generation)
-- An admin dashboard (manage everything visually)
-- Real-time subscriptions (WebSocket-based)
-- Health monitoring (metrics, uptime, ready checks)
-
-Start building your product immediately.
+Setting up a backend takes hours. Database, API, auth, file uploads, deployment. This template collapses all of that into one click. You get a real production backend, not a demo.
 
 ---
 
-## Features
-
-| | Feature |
-|---|--------|
-|  | **One-click deploy** — works on Railway free plan |
-|  | **Persistent database** — Railway Volume, survives redeploys |
-|  | **Admin dashboard** — manage collections, users, files visually |
-|  | **Auto-generated REST API** — full CRUD from your data model |
-|  | **Authentication** — email/password + 50+ OAuth2 providers (Google, GitHub, etc.) |
-|  | **File storage** — upload, resize, serve files with automatic thumbnails |
-|  | **Real-time** — WebSocket subscriptions for live updates |
-|  | **Health monitoring** — `/healthcheck`, `/ready`, `/metrics` endpoints |
-|  | **Zero dependencies** — PocketBase binary + lightweight health sidecar |
-|  | **Alpine Linux** — minimal image, fast startup, low resource usage |
-
----
-
-## Quick Start
-
-### One-Click Deploy
+## Deploy
 
 <p align="center">
   <a href="https://railway.com/template/pocketbase" target="_blank">
@@ -64,71 +28,52 @@ Start building your product immediately.
   </a>
 </p>
 
-1. Click the button above
-2. Wait ~60 seconds
-3. Open `https://your-app.railway.app/_/` — done
+1. **Click the button** — Railway creates your project
+2. **Wait ~90 seconds** — builds and deploys automatically
+3. **Open your URL** — see the landing page with status and links
 
-That's it. Your backend is live. No manual configuration required.
-
-### Local Development
-
-```bash
-git clone https://github.com/your-org/instant-backend
-cd instant-backend
-docker compose up
-```
-
-Open `http://localhost:8080/_/` to access the admin panel.
+That's it. No configuration. No setup.
 
 ---
 
-## Use Cases
+## What You Get
 
-### SaaS Backend
-User authentication, subscription tracking, user-generated content, real-time dashboards. PocketBase handles the heavy lifting — you focus on your product.
+A full PocketBase backend behind a lightweight proxy:
 
-### Mobile App Backend
-REST API for iOS/Android. File uploads for user content. Push notification support. Works with any mobile framework (React Native, Flutter, Swift, Kotlin).
+| What | Where |
+|------|-------|
+| Landing page | `/` |
+| System status | `/system` |
+| Health check | `/health` |
+| Admin panel | `/_/` |
+| REST API | `/api/` |
 
-### API for Bots
-Telegram, Discord, Slack — any bot that needs a lightweight backend. Webhook handling, user state persistence, quick iteration.
-
-### Internal Tools & CRM
-Custom admin panels. Role-based access. Quick prototyping. Data export. Scale from prototype to production without changing tools.
-
-### Microservice Backend
-Need a fast, self-contained backend for a specific service? Deploy one in 60 seconds. No overhead. No complex orchestration.
+The proxy handles routing, health checks, and status pages. PocketBase runs securely on an internal port.
 
 ---
 
-## Architecture
+## Access the Admin Panel
 
-```
-┌──────────────────────────────────────────────────────┐
-│                  Docker (Alpine)                      │
-│                                                       │
-│   ┌──────────────┐          ┌──────────────────┐     │
-│   │  PocketBase  │          │  Health Sidecar   │     │
-│   │  Port 8080   │          │  Port 8090        │     │
-│   │              │          │                   │     │
-│   │  Admin UI    │          │  /healthcheck     │     │
-│   │  REST API    │          │  /ready           │     │
-│   │  Auth        │          │  /metrics         │     │
-│   │  Realtime    │          │                   │     │
-│   └──────┬───────┘          └──────────────────┘     │
-│          │                                            │
-│   ┌──────▼────────────────────────────────────────┐  │
-│   │          Railway Persistent Volume             │  │
-│   │              /pb_data                          │  │
-│   │                                                │  │
-│   │    SQLite DB  │  Uploaded Files  │  Settings   │  │
-│   └───────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────┘
-```
+Open your app URL and click **Open Admin Panel**, or go directly to `/_/`.
 
-**PocketBase** serves the admin panel, API, auth, and real-time subscriptions.  
-**Health Sidecar** monitors PocketBase and reports readiness to Railway.  
-**Persistent Volume** ensures your data survives every restart and deploy.
+**First visit:** PocketBase shows a "Create Admin" screen. Enter email + password. Done.
+
+You can also set `PB_ADMIN_EMAIL` and `PB_ADMIN_PASSWORD` as environment variables before deploy to auto-create the account.
+
+---
+
+## Persistent Storage
+
+By default, data is stored at `/pb_data` inside the container. **Without a volume, data is lost on redeploy.**
+
+### Add a Railway Volume
+
+1. In Railway Dashboard, go to your service
+2. Click **Volumes** → **Add Volume**
+3. Mount path: `/pb_data`
+4. Deploy
+
+The system status page at `/system` shows whether storage is connected.
 
 ---
 
@@ -136,128 +81,95 @@ Need a fast, self-contained backend for a specific service? Deploy one in 60 sec
 
 | Variable | Required | Default | Purpose |
 |---|---|---|---|
-| `PORT` | No | `8080` | Main HTTP port (Railway injects automatically) |
-| `SIDECAR_PORT` | No | `8090` | Health monitoring port |
-| `PB_DATA_DIR` | No | `/pb_data` | Data directory (SQLite + files) |
-| `PB_ENCRYPTION_KEY` | Recommended | — | Encrypts stored secrets. Generate with `openssl rand -base64 32` |
-| `PB_ADMIN_EMAIL` | No | — | Auto-create admin on first deploy |
-| `PB_ADMIN_PASSWORD` | No | — | Admin password (requires `PB_ADMIN_EMAIL`) |
+| `PORT` | No | `8080` | Public HTTP port |
+| `PB_INTERNAL_PORT` | No | `8090` | PocketBase internal port |
+| `PB_DATA_DIR` | No | `/pb_data` | Data directory |
+| `PB_ENCRYPTION_KEY` | Recommended | — | Encrypts stored secrets |
+| `PB_ADMIN_EMAIL` | No | — | Auto-create admin email |
+| `PB_ADMIN_PASSWORD` | No | — | Auto-create admin password |
 
-Set these in **Railway Dashboard > Your Service > Variables**.
+The template works immediately with zero variables. Set `PB_ENCRYPTION_KEY` for production.
+
+Generate a key:
+```bash
+openssl rand -base64 32
+```
 
 ---
 
 ## Connecting a Frontend
 
-### Next.js (App Router)
-
 ```bash
 npm install pocketbase
 ```
 
-```typescript
-// lib/pocketbase.ts
+```ts
 import PocketBase from 'pocketbase';
 
-export const pb = new PocketBase(process.env.NEXT_PUBLIC_PB_URL!);
+const pb = new PocketBase('https://your-app.railway.app');
 
-// Optional: server-side auth
-export function createServerClient() {
-  return new PocketBase(process.env.PB_URL!);
-}
+// Fetch records
+const posts = await pb.collection('posts').getList(1, 20);
+
+// Authenticate
+await pb.collection('users').authWithPassword('email', 'password');
 ```
 
-```typescript
-// app/page.tsx
-import { pb } from '@/lib/pocketbase';
+---
 
-export default async function Home() {
-  const posts = await pb.collection('posts').getList(1, 20, {
-    sort: '-created',
-  });
+## Local Development
 
-  return (
-    <main>
-      <h1>Latest Posts</h1>
-      {posts.items.map((post) => (
-        <article key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-        </article>
-      ))}
-    </main>
-  );
-}
+```bash
+git clone https://github.com/ggmmwwqq/railway-templates-1
+cd railway-templates-1
+docker compose up
 ```
+
+Open `http://localhost:8080`.
+
+---
+
+## Troubleshooting
+
+**Admin panel not loading?**
+Wait 30 seconds and refresh. PocketBase initializes the database on first start.
+
+**Data lost after redeploy?**
+You need a Railway Volume at `/pb_data`. Check `/system` — it shows storage status.
+
+**CORS errors from frontend?**
+Go to PocketBase Admin (`/_/`) → Settings → add your frontend origin.
 
 ---
 
 ## FAQ
 
-**Is this production-ready?**
-Yes. Set `PB_ENCRYPTION_KEY`, enable auth providers in the admin panel, and configure API rules. PocketBase powers thousands of production applications.
+**Production ready?**
+Yes. Set `PB_ENCRYPTION_KEY`, add a volume, configure API rules in the admin panel. PocketBase powers thousands of production apps.
 
-**Can I use PostgreSQL instead of SQLite?**
-Yes. PocketBase supports PostgreSQL as an alternative. See the [PocketBase docs](https://pocketbase.io/docs/).
+**Can I switch to PostgreSQL?**
+Yes. See [PocketBase docs](https://pocketbase.io/docs/).
 
-**Does it work on Railway free plan?**
-Yes. The free plan includes enough resources (512 MB RAM, shared CPU) for most PocketBase workloads. Upgrade if you need more storage or performance.
+**How do I update PocketBase?**
+Change `ARG PB_VERSION` in the Dockerfile and rebuild.
 
-**How do I back up my data?**
-The Railway Volume at `/pb_data` contains everything. Use Railway's snapshot feature, or run `pocketbase backup` to export your database.
+**How do I back up?**
+Copy `/pb_data` from the volume. Railway provides snapshot backups on paid plans.
 
-**Can I add custom server-side logic?**
-Yes. PocketBase supports JavaScript hooks and Go extensions. Add them to `pb_hooks/` in your data directory or via the admin panel.
-
-**How do I configure CORS?**
-Go to the PocketBase admin panel at `/_/#/settings` and add your frontend origin under CORS settings. For development, you can allow all origins temporarily.
-
-**What if PocketBase updates?**
-Update the `PB_VERSION` build arg in `Dockerfile`, rebuild, and redeploy. Your data is safe on the persistent volume.
+**Custom domain?**
+Railway Dashboard → Service → Settings → Public Networking → Custom Domain.
 
 ---
 
-## Customizing
-
-### Update PocketBase Version
-
-```dockerfile
-# Dockerfile — line 1
-ARG PB_VERSION=0.24.0  # Change this
-```
-
-### Add Custom Domain
-
-In Railway Dashboard: Service > Settings > Public Networking > Custom Domain.
-
-### Add Extensions
-
-PocketBase supports JavaScript hooks and Go extensions. Place hooks in `pb_hooks/` within your data directory.
-
----
-
-## Repository Structure
+## Architecture
 
 ```
-.
-├── Dockerfile              # Multi-stage Alpine build
-├── start.sh                # Entrypoint — starts PB + health sidecar
-├── railway.toml            # Railway deployment config
-├── docker-compose.yml      # Local development
-├── .env.example            # Documented environment variables
-├── healthcheck/
-│   └── index.mjs           # Zero-dependency health sidecar
-└── .github/                # Issue templates, funding config
+User → PORT 8080 → Proxy (Node.js)
+                      ├─ /, /system, /health → served directly
+                      └─ /_/, /api/* → PocketBase (127.0.0.1:8090)
+                                           └─ /pb_data (volume)
 ```
 
 ---
 
-## Keywords
-
-`backend` `saas` `pocketbase` `railway` `api` `starter-kit` `boilerplate` `firebase-alternative` `baas` `self-hosted` `docker` `sqlite` `production-ready` `one-click-deploy`
-
----
-
-**License:** MIT
-
-**Built with:** [PocketBase](https://pocketbase.io) &middot; [Railway](https://railway.com) &middot; [Alpine Linux](https://alpinelinux.org)
+MIT &middot; Built with [PocketBase](https://pocketbase.io) + [Railway](https://railway.com)
